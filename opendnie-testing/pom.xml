@@ -34,10 +34,17 @@
   <dependencies>
 	<dependency>
 	    <groupId>org.bouncycastle</groupId>
-	    <artifactId>bcprov-ext-jdk16</artifactId>
-	    <version>1.45</version>
+	    <artifactId>bcprov-jdk16</artifactId>
+	    <version>1.46</version>
 	    <type>jar</type>
+	    <scope>compile</scope>
 	</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+	  <version>4.0</version>
+	  <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <repositories>
