@@ -63,7 +63,7 @@ public class TestFirmaDNIe {
         if (myCert==null) throw new Exception("Certificado de firma no encontrado");
 	}
 
-	private byte [] doFirma(File f,String pin) throws Exception {
+	public byte [] doFirma(File f,String pin) throws Exception {
 		int c;
 
 		/* volcamos a memoria el fichero */
