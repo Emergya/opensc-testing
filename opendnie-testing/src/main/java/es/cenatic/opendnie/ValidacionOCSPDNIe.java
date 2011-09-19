@@ -29,7 +29,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-import org.bouncycastle.ocsp.BasicOCSPRespDD;
+import org.bouncycastle.ocsp.BasicOCSPResp;
 import org.bouncycastle.ocsp.CertificateID;
 import org.bouncycastle.ocsp.OCSPException;
 import org.bouncycastle.ocsp.OCSPReq;
