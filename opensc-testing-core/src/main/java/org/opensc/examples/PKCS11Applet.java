@@ -44,7 +44,9 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.opensc.testing.SecurityUtils;
 
@@ -76,15 +78,24 @@ public class PKCS11Applet extends Applet  implements ActionListener{
 		X509Certificate certificate;
 		KeyStore myStore;
 		
+		Set<String> errors = new HashSet<String>();
+		
 		public void init() {
 			makeGui();
 		} // init
+		
+		private void logException (Exception e){
+			errors.add(e.getLocalizedMessage());
+			if(e.getCause() != null){
+				errors.add("Cause: " + e.getCause().getLocalizedMessage());
+			}
+		}
 		
 		private void computePin() {
 			try {
 				myStore = SecurityUtils.getInitializedKeyStore(pin);
 			}catch (Exception e){
-				e.printStackTrace();
+				logException(e);
 			}
 			
 		} // computePin
@@ -95,16 +106,16 @@ public class PKCS11Applet extends Applet  implements ActionListener{
 				sign = signData.toString(); 
 				verified = SecurityUtils.verify(textToSign.getBytes(), certificate, signData) ? "VERIFIED":"UNVERIFIED";
 			}catch (Exception e){
-				e.printStackTrace();
+				logException(e);
 			}
 			
 		} // computePin
 		
 		@SuppressWarnings("deprecation")
 		public void paint( Graphics g ) {
-
-			if(myStore != null && sign == null){
-				try {
+			try {
+	
+				if(myStore != null && sign == null){
 					Enumeration<String> aliases = myStore.aliases();
 					int numCertificates = 0;
 					aliasesMap = new HashMap<Integer, String>();
@@ -117,15 +128,26 @@ public class PKCS11Applet extends Applet  implements ActionListener{
 						
 						numCertificates++;
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				}else if(sign != null){
+					outText.appendText("*************************************** " +
+							"BEGIN SIGN (" + verified + ") from '" + textToSign + "' ***************************************\n");
+					outText.appendText(sign +"\n");
+					outText.appendText("*************************************** " +
+							"END SIGN (" + verified + ") from '" + textToSign + "' ***************************************\n");
 				}
-			}else if(sign != null){
+			} catch (Exception e) {
+				logException(e);
+			}
+			
+			if(errors.size()>0){
 				outText.appendText("*************************************** " +
-						"BEGIN SIGN (" + verified + ") from '" + textToSign + "' ***************************************\n");
-				outText.appendText(sign +"\n");
+						"Errors occurs ***************************************\n");
+				for(String error: errors){
+					outText.appendText(error + "\n");
+				}
 				outText.appendText("*************************************** " +
-						"END SIGN (" + verified + ") from '" + textToSign + "' ***************************************\n");
+						"EoF Errors ***************************************\n");
+				errors.clear();
 			}
 		} // paint
 		
@@ -134,15 +156,14 @@ public class PKCS11Applet extends Applet  implements ActionListener{
 		} // processPin
 		
 		private void processSign() { // reads float values from text fields
-			processPin();
-			textToSign = textText.getText();
-			String alias = aliasesMap.get(Integer.decode(certText.getText()));
 			try {
+				processPin();
+				textToSign = textText.getText();
+				String alias = aliasesMap.get(Integer.decode(certText.getText()));
 				privateKey = (PrivateKey) myStore.getKey(alias, pin.toCharArray());
 				certificate = (X509Certificate) myStore.getCertificate(alias);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logException(e);
 			}
 		} // processSign
 		
@@ -199,7 +220,7 @@ public class PKCS11Applet extends Applet  implements ActionListener{
 			
 			// Output area
 			outText = new TextArea("Output\n\n", 20, 40, TextArea.SCROLLBARS_BOTH);
-			outText.setBackground(new Color(255, 153, 0));
+			outText.setBackground(new Color(180, 180, 180));
 			add("Center", outText);
 			
 		} // makeGui
