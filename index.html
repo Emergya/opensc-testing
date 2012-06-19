@@ -27,7 +27,16 @@
       <section>
         <h3>Welcome to OpenSC testing.</h3>
 
-<p>Here will be the examples</p>
+	<p>Here will be the examples</p>
+      </section>
+      <section>
+	<h2>PKCS#11 simple applet</h2>
+	<p>This applet access to your card, list your certs and sign a text string using OpenSC</p>
+	<applet code="org.opensc.examples.PKCS11Applet.class"
+		archive="opensc-testing-core-0.1-SNAPSHOT.jar"
+		width=600 height=500>
+	</applet>
+	<p>Tested on Ubuntu 12.04 with OpenSC installed from <a href="https://github.com/OpenSC/OpenSC">source</a> and using <a href="http://www.opensc-project.org/opensc/wiki/FTCOSPK01C">entersafe card</a></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/alediator">alediator</a></p>
