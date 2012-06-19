@@ -27,10 +27,15 @@
       <section>
         <h3>Welcome to OpenSC testing.</h3>
 
-	<p>Here will be the examples</p>
+	<p>Here will be more testing examples</p>
       </section>
       <section>
 	<h2>PKCS#11 simple applet</h2>
+	<p>If you get 'access denied (java.lang.RuntimePermission accessClassInPackage.sun.security.pkcs11)' error code, you must edit your ${java.home}/**/java.policy</p>
+	<pre>//OpenSC testing permission
+	grant codeBase "**opensc-testing-core-0.1-SNAPSHOT.jar" {
+		permission java.util.PropertyPermission "sun.security.pkcs11.*", "read";
+	};</pre>
 	<p>This applet access to your card, list your certs and sign a text string using OpenSC</p>
 	<applet code="org.opensc.examples.PKCS11Applet.class"
 		archive="opensc-testing-core-0.1-SNAPSHOT.jar"
