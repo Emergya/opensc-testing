@@ -34,11 +34,11 @@ import java.util.Enumeration;
 import org.opensc.testing.SecurityUtils;
 
 /**
- * Java SunPKCS11 sample for ePass token
- * This sample will load SunPKCS#11 provider, enumerate the certificates
- * in the token and use selected certificate to sign and verify context string.
+ * Java SunPKCS11.<br/>
+ * This sample will load SunPKCS#11 provider, enumerate the certificates<br/>
+ * in the token and use selected certificate to sign and verify context string.<br/>
  * 
- * @author adiaz - separate SecutityUtils.java
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  */
 public class Example1 {
 

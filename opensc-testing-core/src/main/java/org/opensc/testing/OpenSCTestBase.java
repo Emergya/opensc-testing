@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Base class for OpenSC testing from Junit 
  * 
- * @author adiaz
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  *
  */
 public class OpenSCTestBase {

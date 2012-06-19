@@ -44,16 +44,31 @@ import java.util.Map;
 /**
  * Utilities to manage security from java for OpenSC
  * 
- * @author adiaz
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  *
  */
+@SuppressWarnings("restriction")
 public class SecurityUtils {
 
 	/* TODO: read from properties */
+	
+	/**
+	 * SmartCard Reader slot (defaults 1)
+	 */
 	public static String SLOT = "1"; //TODO parametrize
+	
 	public static final String WINDOWS = "win";
 	public static final String OS_X = "mac";
 	public static final String LINUX = "lin";
+	
+	/**
+	 * Library by system known: 
+	 * <ul>
+	 * 	<li>WINDOWS: C:\WINDOWS\system32\opensc-pkcs11.dll</li>
+	 * 	<li>OS_X: /usr/local/lib/opensc-pkcs11.so</li> 
+	 * 	<li>LINUX: /usr/lib/opensc-pkcs11.so</li>
+	 * </ul>
+	 */
 	public static final Map<String, String> CONFIG_LIB;
 	static{
 		CONFIG_LIB = new HashMap<String, String>();
@@ -71,11 +86,19 @@ public class SecurityUtils {
 	}
     private static final String DIGITAL_SIGNATURE_ALGORITHM_NAME = "SHA1withRSA";
 	
-
+    /**
+     * Java property for os_name (os.name)
+     */
 	public static final String OS_NAME_PROPERTY = "os.name";
-	public static final String name = "OpenSC PKCS#11";
-	public static final String certAlias="CertFirmaDigital"; 
 	
+	/**
+	 * Default name for provider: 'OpenSC PKCS#11'
+	 */
+	public static final String name = "OpenSC PKCS#11"; 
+	
+	/**
+	 * Provider of PKCS#11 from OpenSC 
+	 */
 	public static Provider pkcs11Provider;
 	
 	static{
@@ -108,7 +131,7 @@ public class SecurityUtils {
 	/**
 	 * Obtain OpenSC PKCS#11 keystore initialized with <code>pin</code>
 	 * 
-	 * @param pin
+	 * @param pin of the card
 	 * @return keystore initialized
 	 * @throws Exception
 	 */
@@ -135,10 +158,10 @@ public class SecurityUtils {
 	/**
 	 * Sign and verify an array of bytes
 	 * 
-	 * @param dataToSign
+	 * @param dataToSign to be signed
 	 * @param alias to use in sign
-	 * @param pin
-	 * @param keyStore
+	 * @param pin of the card
+	 * @param keyStore for search the alias
 	 * 
 	 * @return <code>true</code> if the sign verification its true or <code>false</code> otherwise
 	 * 
@@ -160,8 +183,8 @@ public class SecurityUtils {
 	/**
 	 * Sign bytes with  <code>privateKey</code>
 	 * 
-	 * @param dataToSign
-	 * @param privateKey
+	 * @param dataToSign to be signed
+	 * @param privateKey for the sign
 	 * 
 	 * @return <code>sign</code>
 	 * 
@@ -178,25 +201,29 @@ public class SecurityUtils {
 	}
 	
 	/**
+	 * Verify the <code>dataSignature</code> of <code>dataToSign</code> using <code>certificate</code>
 	 * 
-	 * @param dataToSign
-	 * @param certificate
-	 * @param dataSignature
-	 * @return
+	 * @param dataSigned to verify
+	 * @param certificate used to the sign
+	 * @param dataSignature to verify (sign of <code>dataSigned</code>)
+	 * 
+	 * @return <code>true</code> if is verified or <code>false</code> otherwise
+	 * 
 	 * @throws SignatureException
 	 * @throws InvalidKeyException
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static boolean verify(byte [] dataToSign, X509Certificate certificate, byte[] dataSignature) 
+	public static boolean verify(byte [] dataSigned, X509Certificate certificate, byte[] dataSignature) 
 			throws SignatureException, InvalidKeyException, NoSuchAlgorithmException{
 		Signature verificacion = Signature.getInstance(DIGITAL_SIGNATURE_ALGORITHM_NAME);
         verificacion.initVerify(certificate);
-        verificacion.update(dataToSign);
+        verificacion.update(dataSigned);
         return verificacion.verify(dataSignature);
 	}
 
 	/**
-	 * Remove the security provider
+	 * Remove the security provider <br/> 
+	 * 	<code>Security.removeProvider(pkcs11Provider.getName());</code>
 	 */
 	@Override
 	protected void finalize() throws Throwable {

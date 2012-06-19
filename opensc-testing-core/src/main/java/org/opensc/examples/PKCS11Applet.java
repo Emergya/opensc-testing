@@ -53,7 +53,7 @@ import org.opensc.testing.SecurityUtils;
 /**
  * Example applet for {@link SecurityUtils} use. Simple PKCS#11 sign OpenSC based 
  * 
- * @author adiaz
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  * 
  * @see SecurityUtils
  *

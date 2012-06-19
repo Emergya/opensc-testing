@@ -34,7 +34,7 @@ import org.junit.Test;
 /**
  * This JUnit test verify a simple sign with the last certificate of a smartcard using OpenSC
  * 
- * @author adiaz
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  *
  */
 public class SingTest extends OpenSCTestBase{

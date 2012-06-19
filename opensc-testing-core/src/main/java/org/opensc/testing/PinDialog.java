@@ -35,7 +35,7 @@ import javax.swing.JPasswordField;
 /**
  * Simple PIN dialog 
  * 
- * @author adiaz
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  *
  */
 public class PinDialog {

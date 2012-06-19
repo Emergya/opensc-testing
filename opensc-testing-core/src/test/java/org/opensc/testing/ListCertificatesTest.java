@@ -34,7 +34,7 @@ import org.junit.Test;
 /**
  * This JUnit test list smartcard certificates in a smartcard using opensc
  * 
- * @author adiaz
+ * @author <a href="mailto:adiaz@emergya.com">Alejandro Diaz Torres</a>
  *
  */
 public class ListCertificatesTest extends OpenSCTestBase{
