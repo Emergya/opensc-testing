@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.emergya.testing</groupId>
+  <artifactId>visor-selenium-testing</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Sicecat Testing with selenium</name>
+  <url>http://www.emergya.es</url>
+  
+  <properties>
+  	<selenium.test.properties>localChrome</selenium.test.properties>
+  </properties>
+  
+  <profiles>
+  	<profile>
+  		<id>localChrome</id>
+  		<properties>
+  			<selenium.test.properties>localChrome</selenium.test.properties>
+  		</properties>
+  	</profile>
+  	<profile>
+  		<id>localFirefox</id>
+  		<properties>
+  			<selenium.test.properties>localFirefox</selenium.test.properties>
+  		</properties>
+  	</profile>
+  	<profile>
+  		<id>localChrFF</id>
+  		<properties>
+  			<selenium.test.properties>localChrFF</selenium.test.properties>
+  		</properties>
+  	</profile>
+  </profiles>
+  
+  <distributionManagement>
+	<!-- use the following if you're not using a snapshot version. -->
+		<repository>
+			<id>nexus.releases</id>
+			<name>Nexus SiceCat Releases</name>
+			<url>http://nexus.emergya.es/nexus/content/repositories/sicecat-repo/</url>
+		</repository>
+		<!-- use the following if you ARE using a snapshot version. -->
+		<snapshotRepository>
+			<id>nexus.snapshots</id>
+			<name>Nexus SiceCat Snapshot</name>
+			<url>http://nexus.emergya.es/nexus/content/repositories/sicecat-repo-snapshots/</url>
+		</snapshotRepository>
+  </distributionManagement>
+
+  <build>
+		<finalName>Selenium Testing</finalName>
+		
+		<filters>
+			<filter>src/main/filters/${selenium.test.properties}.properties</filter>
+		</filters>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        
+		<plugins>
+			<plugin>
+
+				<!-- Maven compiler plugin -->
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<optimize>true</optimize>
+				</configuration>
+			</plugin>
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>selenium-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start-server</goal>
+                        </goals>
+                        <configuration>
+                            <background>true</background>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+                    <skip>true</skip>
+                </configuration>
+                
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
+	
+  <dependencies>
+  	<dependency>
+      <groupId>com.emergya.testing</groupId>
+	  <artifactId>selenium-test-core</artifactId>
+	  <version>0.1-SNAPSHOT</version>
+	  <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+	  <version>4.0</version>
+	  <scope>test</scope>
+    </dependency>
+    <dependency>
+	  <groupId>org.testng</groupId>
+	  <artifactId>testng</artifactId>
+	  <version>5.14</version>
+	  <scope>test</scope>
+	</dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+	  <version>1.2.14</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>net.disy.htmlunit</groupId>
+      <artifactId>htmlunit</artifactId>
+      <version>2.6</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>net.jsunit</groupId>
+      <artifactId>jsunit-testRunner</artifactId>
+      <version>2.1.4</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>jetty</groupId>
+          <artifactId>jetty</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jetty</groupId>
+          <artifactId>start</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+      <artifactId>selenium-java-client-driver</artifactId>
+      <version>1.0.2</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+      <artifactId>selenium-java-testng-helper</artifactId>
+      <version>1.0-beta-2</version>
+      <scope>test</scope>
+    </dependency>
+    <!--
+      dependency> <groupId>rhino</groupId> <artifactId>js</artifactId>
+      <version>1.6R7</version> </dependency -->
+    <!--
+      dependency> <groupId>net.sourceforge.htmlunit</groupId>
+      <artifactId>htmlunit</artifactId> <version>2.5</version>
+      </dependency -->
+    <!--
+      dependency> <groupId>net.sourceforge.htmlunit</groupId>
+      <artifactId>htmlunit-core-js</artifactId> <version>2.5.1</version>
+      </dependency -->
+    <dependency>
+      <groupId>net.sourceforge.collections</groupId>
+      <artifactId>collections-generic</artifactId>
+      <version>4.01</version>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+		<repository>
+			<id>axis2m</id>
+			<name>Axis2m Repository</name>
+			<url>http://axis2m.sourceforge.net/repo/</url>
+		</repository>
+		<repository>
+			<id>emergya</id>
+			<name>Emergya Repository</name>
+			<url>http://gis.emergya.info/nexus/content/repositories/public</url>
+		</repository>
+		<repository>
+			<id>spring-repo</id>
+			<url>http://maven.springframework.org</url>
+		</repository>
+		<repository>
+			<id>nexus.releases</id>
+			<name>Nexus Ceuta Releases</name>
+			<url>http://nexus.emergya.es/nexus/content/repositories/ceuta-repo/</url>
+    	</repository>
+	    <!-- use the following if you ARE using a snapshot version. -->
+	    <repository>
+	        <id>nexus.snapshots</id>
+      		<name>Nexus Ceuta Snapshot</name>
+      		<url>http://nexus.emergya.es/nexus/content/repositories/ceuta-repo-snapshots/</url>
+	    </repository>
+
+	</repositories>
+	
+</project>
