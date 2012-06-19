@@ -15,8 +15,8 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Opensc-testing</h1>
-        <p>Set of tests for OpenDNIe and OpenSC projects</p>
+        <h1>OpenSC-testing</h1>
+        <p>Set of tests for OpenSC project</p>
         <p class="view"><a href="https://github.com/alediator/opensc-testing">View the Project on GitHub <small>alediator/opensc-testing</small></a></p>
         <ul>
           <li><a href="https://github.com/alediator/opensc-testing/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -27,21 +27,27 @@
       <section>
         <h3>Welcome to OpenSC testing.</h3>
 
-	<p>Here will be more testing examples</p>
+	<p>This project use OpenSC PKCS#11 implementation from Java</p>
+	<ul><li>Maven test</li><li>Simple Applet</li></ul>
       </section>
       <section>
 	<h2>PKCS#11 simple applet</h2>
-	<p>If you get 'access denied (java.lang.RuntimePermission accessClassInPackage.sun.security.pkcs11)' error code, you must edit your ${java.home}/**/java.policy</p>
-	<pre>//OpenSC testing permission
-	grant codeBase "**opensc-testing-core-0.1-SNAPSHOT.jar" {
-		permission java.util.PropertyPermission "sun.security.pkcs11.*", "read";
-	};</pre>
 	<p>This applet access to your card, list your certs and sign a text string using OpenSC</p>
 	<applet code="org.opensc.examples.PKCS11Applet.class"
 		archive="opensc-testing-core-0.1-SNAPSHOT.jar"
 		width=600 height=500>
 	</applet>
 	<p>Tested on Ubuntu 12.04 with OpenSC installed from <a href="https://github.com/OpenSC/OpenSC">source</a> and using <a href="http://www.opensc-project.org/opensc/wiki/FTCOSPK01C">entersafe card</a></p>
+	<h3>Known issues</h3>
+	<h4>Access Denied</h4>
+	<p>If you get <pre>access denied (java.lang.RuntimePermission accessClassInPackage.sun.security.pkcs11)</pre> error code, you must edit your <strong>${java.home}/**/java.policy</strong> and add:</p>
+	<pre>
+	//OpenSC testing permission
+	grant codeBase "file:/${your_project_dir}/opensc-testing/*" {
+		permission java.security.AllPermission;
+	};</pre>
+	<h4>More</h4>
+	<p>If you have other problems with the applet: <ol><li>Clear the cache browser</li><li>Test smartcard connection with opensc-tools</li><li> Try again</li><ol></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/alediator">alediator</a></p>
